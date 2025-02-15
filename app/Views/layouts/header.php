@@ -13,8 +13,8 @@
         <div class="hidden lg:flex lg:gap-x-12">
             <a href="<?= base_url('home'); ?>" class="<?= ($currentRoute == 'home') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">Home</a>
             <a href="<?= base_url('users'); ?>" class="<?= ($currentRoute == 'users') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">User</a>
-            <a href="#" class="nav-link text-sm/6 font-semibold text-gray-900 hover:text-blue-500">Ranking</a>
-            <a href="#" class="nav-link text-sm/6 font-semibold text-gray-900 hover:text-blue-500">Feedback</a>
+            <a href="<?= base_url('users/ranking'); ?>" class="<?= ($currentRoute == 'users/ranking') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-500">Ranking</a>
+            <a href="<?= base_url('users/feedback'); ?>" class="<?= ($currentRoute == 'users/feedback') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-500">Feedback</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -38,8 +38,8 @@
                     <div class="space-y-2 py-6">
                         <a href="<?= base_url('home'); ?>" class="<?= ($currentRoute == 'home') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Home</a>
                         <a href="<?= base_url('users'); ?>" class="<?= ($currentRoute == 'users') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">User</a>
-                        <a href="#" class="nav-link -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-100">Ranking</a>
-                        <a href="#" class="nav-link -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-100">Feedback</a>
+                        <a href="<?= base_url('users/ranking'); ?>" class="<?= ($currentRoute == 'users/ranking') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Ranking</a>
+                        <a href="<?= base_url('users/feedback'); ?>" class="<?= ($currentRoute == 'users/feedback') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Feedback</a>
                     </div>
                     <div class="py-6">
                         <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-100">Log in</a>

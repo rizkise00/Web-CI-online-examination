@@ -30,3 +30,9 @@ $routes->post('/users/store', 'UserController::store');
 $routes->get('/users/edit/(:num)', 'UserController::edit/$1');
 $routes->post('/users/update/(:num)', 'UserController::update/$1');
 $routes->get('/users/delete/(:num)', 'UserController::delete/$1');
+
+// User Ranking
+$routes->get('/users/ranking', 'UserController::ranking');
+
+// User Feedback
+$routes->get('/users/feedback', 'UserController::feedback');

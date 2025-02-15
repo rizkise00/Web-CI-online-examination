@@ -83,6 +83,32 @@ class UserModel extends Model
         $db = \Config\Database::connect();
         $db->transStart();
 
+        $user = $this->where('id', $userId)->first();
+
+        $userAnswerModel = new \App\Models\UserAnswerModel();
+        $userHistoryModel = new \App\Models\UserHistoryModel();
+        $userRankingModel = new \App\Models\UserRankingModel();
+        $userFeedbackModel = new \App\Models\UserFeedbackModel();
+
+        $userAnswers = $userAnswerModel->where('user_id', $user['uid'])->findAll();
+
+        foreach ($userAnswers as $answer) {
+            $userAnswerModel->where('id', $answer['id'])->delete();
+        }
+
+        $userHistories = $userHistoryModel->where('user_id', $user['uid'])->findAll();
+
+        foreach ($userHistories as $history) {
+            $userHistoryModel->where('id', $history['id'])->delete();
+        }
+
+        $userFeedbacks = $userFeedbackModel->where('user_id', $user['uid'])->findAll();
+
+        foreach ($userFeedbacks as $feedback) {
+            $userFeedbackModel->where('id', $feedback['id'])->delete();
+        }
+
+        $userRankingModel->where('user_id', $user['uid'])->delete();
         $this->where('id', $userId)->delete();
 
         $db->transComplete();
@@ -92,5 +118,37 @@ class UserModel extends Model
         }
 
         return ['status' => 200, 'message' => 'Successfully deleted user'];
+    }
+
+    public function getListRanking($perPage, $page)
+    {
+        $userRankingModel = new \App\Models\UserRankingModel();
+
+        $data = [
+            'user_list' => $userRankingModel
+                            ->select('user_rankings.total_score, users.full_name, users.email, users.gender, users.college')
+                            ->join('users', 'users.uid = user_rankings.user_id')
+                            ->orderBy('user_rankings.total_score', 'DESC')
+                            ->paginate($perPage, 'default', $page),
+            'pager' => $userRankingModel->pager
+        ];
+
+        return $data;
+    }
+
+    public function getListFeedback($perPage, $page)
+    {
+        $userFeedbackModel = new \App\Models\UserFeedbackModel();
+
+        $data = [
+            'user_list' => $userFeedbackModel
+                            ->select('user_feedbacks.message, users.full_name, users.email')
+                            ->join('users', 'users.uid = user_feedbacks.user_id')
+                            ->orderBy('user_feedbacks.created_at', 'DESC')
+                            ->paginate($perPage, 'default', $page),
+            'pager' => $userFeedbackModel->pager
+        ];
+
+        return $data;
     }
 }

@@ -119,4 +119,26 @@ class UserController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
+    public function ranking()
+    {
+        $perPage = 10;
+        $currentPage = $this->request->getVar('page') ?? 1;
+
+        $data = $this->userModel->getListRanking($perPage, $currentPage);
+        $content['content'] = view('user/ranking', $data);
+
+		return view('layouts/master', $content);
+    }
+
+    public function feedback()
+    {
+        $perPage = 10;
+        $currentPage = $this->request->getVar('page') ?? 1;
+
+        $data = $this->userModel->getListFeedback($perPage, $currentPage);
+        $content['content'] = view('user/feedback', $data);
+
+		return view('layouts/master', $content);
+    }
 }
