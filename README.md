@@ -96,3 +96,19 @@ This happens because Windows cannot find the PHP executable (php.exe) in its sys
    - Click **New**, then add your PHP installation path (e.g., `C:\xampp\php\`).
    - Click **OK** to save the changes.
 3. Restart terminal and try again `php spark serve`
+
+### 10. Login Testing
+
+Use the following credentials to test login based on user roles.
+
+```bash
+Role Admin :
+Email : admin@gmail.com
+Password : password
+```
+
+```bash
+Role User :
+Email : user@gmail.com
+Password : password
+```
