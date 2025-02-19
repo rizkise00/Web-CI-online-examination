@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 15 Feb 2025 pada 10.25
+-- Waktu pembuatan: 19 Feb 2025 pada 14.04
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -104,7 +104,7 @@ CREATE TABLE `user_answers` (
   `user_id` varchar(10) NOT NULL,
   `quiz_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
-  `answer` int(11) NOT NULL,
+  `answer` varchar(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
