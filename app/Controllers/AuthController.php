@@ -42,9 +42,12 @@ class AuthController extends Controller
             $response = $this->authModel->verifyLogin($email, $password);
 
             if ($response['status'] === 200) {
-                $this->session->set('user_id', $response['user']['uid']);
-                $this->session->set('user_full_name', $response['user']['full_name']);
-                $this->session->set('user_role', $response['user']['role']);
+                $userData = [
+                    'user_id' => $response['user']['uid'],
+                    'full_name' => $response['user']['full_name'],
+                    'role' => $response['user']['role']
+                ];
+                $this->session->set('user_data', json_encode($userData));
 
                 return redirect()->to(base_url('home'));
             } else {
@@ -79,11 +82,17 @@ class AuthController extends Controller
 
             if ($response['status'] === 200) {
                 $this->session->setFlashdata('success', $response['message']);
-                return redirect('/');
+                return redirect()->to(base_url('/'));
             } else {
                 $this->session->setFlashdata('error', $response['message']);
                 return redirect()->back()->withInput();
             }        
         }
+    }
+
+    public function logout()
+    {
+        $this->session->destroy();
+        return redirect()->to(base_url('/'));
     }
 }

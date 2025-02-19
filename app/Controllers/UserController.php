@@ -21,6 +21,11 @@ class UserController extends Controller
 
     public function index()
     {
+        $user = json_decode($this->session->get('user_data'), true);
+        if ($user['role'] == 'user') {
+            return redirect()->to(base_url('home'));
+        }
+
         $perPage = 10;
         $currentPage = $this->request->getVar('page') ?? 1;
 
@@ -36,6 +41,11 @@ class UserController extends Controller
 
     public function add()
     {
+        $user = json_decode($this->session->get('user_data'), true);
+        if ($user['role'] == 'user') {
+            return redirect()->to(base_url('home'));
+        }
+
         $content['content'] = view('user/add');
 
 		return view('layouts/master', $content);
@@ -71,6 +81,11 @@ class UserController extends Controller
 
     public function edit($userId)
     {
+        $user = json_decode($this->session->get('user_data'), true);
+        if ($user['role'] == 'user') {
+            return redirect()->to(base_url('home'));
+        }
+        
         $response = $this->userModel->get($userId);
 
         if ($response['status'] === 200) {
@@ -138,6 +153,53 @@ class UserController extends Controller
 
         $data = $this->userModel->getListFeedback($perPage, $currentPage);
         $content['content'] = view('user/feedback', $data);
+
+		return view('layouts/master', $content);
+    }
+
+    public function feedbackForm()
+    {
+        $content['content'] = view('user/feedback-form');
+
+		return view('layouts/master', $content);
+    }
+
+    public function storeFeedback()
+    {
+        $input = $this->request->getPost();
+        $rules = [
+            'message' => 'required'
+        ];                
+
+        if (!$this->validation->setRules($rules)->run($input)) {
+            $this->session->setFlashdata('validation_errors', $this->validation->getErrors());
+            return redirect()->back()->withInput();
+        } else {
+            $user = json_decode($this->session->get('user_data'), true);
+            $input = $this->request->getPost();
+            $data = [
+                'user_id' => $user['user_id'],
+                'message' => $input['message']
+            ];
+            $response = $this->userModel->storeFeedback($data);
+
+            if ($response['status'] === 200) {
+                $this->session->setFlashdata('success', $response['message']);
+                return redirect()->to(base_url('users/feedback-form'));
+            } else {
+                $this->session->setFlashdata('error', $response['message']);
+                return redirect()->back()->withInput();
+            }
+        }
+    }
+
+    public function quizHistory()
+    {
+        $perPage = 10;
+        $currentPage = $this->request->getVar('page') ?? 1;
+
+        $data = $this->userModel->getListQuizHistory($perPage, $currentPage);
+        $content['content'] = view('user/history', $data);
 
 		return view('layouts/master', $content);
     }

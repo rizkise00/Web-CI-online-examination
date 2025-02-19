@@ -20,9 +20,10 @@ class HomeController extends Controller
     {
         $perPage = 10;
         $currentPage = $this->request->getVar('page') ?? 1;
+        $user = json_decode($this->session->get('user_data'), true);
 
         $data = [
-            'quiz_list' => $this->quizModel->getList($perPage, $currentPage),
+            'quiz_list' => $this->quizModel->getList($perPage, $currentPage, ($user['role'] == 'user' ? $user['user_id'] : null)),
             'pager' => $this->quizModel->pager
         ];
 
@@ -101,6 +102,58 @@ class HomeController extends Controller
         if ($response['status'] === 200) {
             $this->session->setFlashdata('success', $response['message']);
             return redirect()->to(base_url('home'));
+        } else {
+            $this->session->setFlashdata('error', $response['message']);
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function startQuiz($quizId, $questionNo = 1)
+    {
+        $response = $this->quizModel->getQuestion($quizId, $questionNo);
+
+        if ($response['status'] === 200) {
+            $content['content'] = view('home/quiz', ['quiz' => $response['data']]);
+            return view('layouts/master', $content);
+        } else {
+            $this->session->setFlashdata('error', $response['message']);
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function storeQuestion()
+    {
+        $user = json_decode($this->session->get('user_data'), true);
+
+        $input = $this->request->getPost();
+        $input['user_id'] = $user['user_id'];
+
+        $response = $this->quizModel->storeQuestion($input);
+
+        if ($response['status'] === 200) {
+            $quizId = (int) $input['quiz_id'];
+            $question = (int) $input['current_question'];
+            $total = (int) $input['total_question'];
+
+            if ($question < $total) {
+                return redirect()->to(base_url('home/start-quiz/' . $quizId . '/' . ($question + 1)));
+            } else {
+                return redirect()->to(base_url('home/result-quiz/' . $quizId));
+            }
+        } else {
+            $this->session->setFlashdata('error', $response['message']);
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function resultQuiz($quizId)
+    {
+        $user = json_decode($this->session->get('user_data'), true);
+        $response = $this->quizModel->getResult($user['user_id'], $quizId);
+
+        if ($response['status'] === 200) {
+            $content['content'] = view('home/result', ['result' => $response['data']]);
+            return view('layouts/master', $content);
         } else {
             $this->session->setFlashdata('error', $response['message']);
             return redirect()->back()->withInput();

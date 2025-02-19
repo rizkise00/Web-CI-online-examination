@@ -1,12 +1,19 @@
+<?php 
+    $session = session();
+    $user = json_decode($session->get('user_data'), true);
+?>
+
 <div class="max-w-7xl mx-auto p-6 lg:px-8">
     <div class="p-4 bg-white shadow rounded-lg">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Quiz List</h1>
-            <a href="<?= base_url('home/add-quiz'); ?>">
-                <button class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
-                    Add Quiz
-                </button>
-            </a>
+            <?php if ($user['role'] == 'admin'): ?>
+                <a href="<?= base_url('home/add-quiz'); ?>">
+                    <button class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
+                        Add Quiz
+                    </button>
+                </a>
+            <?php endif; ?>
         </div>
         <div class="relative overflow-x-auto">
             <?php 
@@ -40,7 +47,7 @@
                 </thead>
                 <tbody>
                     <?php foreach ($quiz_list as $index => $quiz): ?>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <tr class="<?= isset($quiz['quiz_completed']) && $quiz['quiz_completed'] ? 'bg-green-100 border-green-500 hover:bg-green-200' : 'bg-white border-gray-200 hover:bg-gray-50' ?> border-b">
                             <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <?= esc($index + 1) ?>
                             </th>
@@ -54,19 +61,28 @@
                                 <?= esc($quiz['time'] . ' min') ?>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" class="mr-1">
-                                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded">
-                                        Start
+                                <?php if ($user['role'] == 'admin'): ?>
+                                    <a href="<?= base_url('home/edit-quiz/' . $quiz['id']); ?>" class="mr-1">
+                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                            Edit
+                                        </button>
+                                    </a>
+                                    <button type="button" data-id="<?= $quiz['id']; ?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded deleteButton">
+                                        Delete
                                     </button>
-                                </a>
-                                <a href="<?= base_url('home/edit-quiz/' . $quiz['id']); ?>" class="mr-1">
-                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
-                                        Edit
-                                    </button>
-                                </a>
-                                <button type="button" data-id="<?= $quiz['id']; ?>" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded deleteButton">
-                                    Delete
-                                </button>
+                                <?php else: ?>
+                                    <a href="<?= base_url('home/start-quiz/' . $quiz['id'] . '/1'); ?>" class="mr-1">
+                                        <?php if ($quiz['quiz_completed']): ?>
+                                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
+                                                Restart
+                                            </button>
+                                        <?php else: ?>
+                                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded">
+                                                Start
+                                            </button>
+                                        <?php endif; ?>
+                                    </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

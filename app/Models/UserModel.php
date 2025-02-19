@@ -151,4 +151,37 @@ class UserModel extends Model
 
         return $data;
     }
+
+    public function storeFeedback($data)
+    {
+        $db = \Config\Database::connect();
+        $db->transStart();
+
+        $userFeedbackModel = new \App\Models\UserFeedbackModel();
+        $userFeedbackModel->insert($data);
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return ['status' => 401, 'message' => 'Failed to create feedback'];
+        }
+
+        return ['status' => 200, 'message' => 'Successfully created feedback'];
+    }
+
+    public function getListQuizHistory($perPage, $page)
+    {
+        $userHistoryModel = new \App\Models\UserHistoryModel();
+
+        $data = [
+            'history_list' => $userHistoryModel
+                            ->select('user_histories.*, quizzes.title, quizzes.total_question')
+                            ->join('quizzes', 'quizzes.id = user_histories.quiz_id')
+                            ->orderBy('user_histories.created_at', 'DESC')
+                            ->paginate($perPage, 'default', $page),
+            'pager' => $userHistoryModel->pager
+        ];
+
+        return $data;
+    }
 }

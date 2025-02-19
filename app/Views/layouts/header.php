@@ -1,4 +1,8 @@
-<?php $currentRoute = uri_string(); ?>
+<?php 
+    $currentRoute = uri_string(); 
+    $session = session();
+    $user = json_decode($session->get('user_data'), true);
+?>
 
 <header class="bg-white">
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -11,13 +15,21 @@
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <a href="<?= base_url('home'); ?>" class="<?= ($currentRoute == 'home') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">Home</a>
-            <a href="<?= base_url('users'); ?>" class="<?= ($currentRoute == 'users') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">User</a>
-            <a href="<?= base_url('users/ranking'); ?>" class="<?= ($currentRoute == 'users/ranking') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-500">Ranking</a>
-            <a href="<?= base_url('users/feedback'); ?>" class="<?= ($currentRoute == 'users/feedback') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-500">Feedback</a>
+            <a href="<?= base_url('home'); ?>" class="<?= (strpos($currentRoute, 'home') !== false) ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">Home</a>
+            <?php if ($user['role'] == 'admin'): ?>
+                <a href="<?= base_url('users'); ?>" class="<?= ($currentRoute == 'users') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">User</a>
+            <?php else: ?>
+                <a href="<?= base_url('users/quiz-history'); ?>" class="<?= ($currentRoute == 'users/quiz-history') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">History</a>
+            <?php endif; ?>
+            <a href="<?= base_url('users/ranking'); ?>" class="<?= ($currentRoute == 'users/ranking') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">Ranking</a>
+            <?php if ($user['role'] == 'admin'): ?>
+                <a href="<?= base_url('users/feedback'); ?>" class="<?= ($currentRoute == 'users/feedback') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">Feedback</a>
+            <?php else: ?>
+                <a href="<?= base_url('users/feedback-form'); ?>" class="<?= ($currentRoute == 'users/feedback-form') ? 'text-blue-500' : 'text-gray-900'; ?> text-sm/6 font-semibold hover:text-blue-700">Feedback</a>
+            <?php endif; ?>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+            <a href="<?= base_url('logout'); ?>" class="text-sm/6 font-semibold text-gray-900 hover:text-blue-700">Log out <span aria-hidden="true">&rarr;</span></a>
         </div>
     </nav>
 
@@ -37,12 +49,20 @@
                 <div class="-my-6 divide-y divide-gray-500/10">
                     <div class="space-y-2 py-6">
                         <a href="<?= base_url('home'); ?>" class="<?= ($currentRoute == 'home') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Home</a>
-                        <a href="<?= base_url('users'); ?>" class="<?= ($currentRoute == 'users') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">User</a>
+                        <?php if ($user['role'] == 'admin'): ?>
+                            <a href="<?= base_url('users'); ?>" class="<?= ($currentRoute == 'users') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">User</a>
+                        <?php else: ?>
+                            <a href="<?= base_url('users/quiz-history'); ?>" class="<?= ($currentRoute == 'users/quiz-history') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">History</a>
+                        <?php endif; ?>
                         <a href="<?= base_url('users/ranking'); ?>" class="<?= ($currentRoute == 'users/ranking') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Ranking</a>
-                        <a href="<?= base_url('users/feedback'); ?>" class="<?= ($currentRoute == 'users/feedback') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Feedback</a>
+                        <?php if ($user['role'] == 'admin'): ?>
+                            <a href="<?= base_url('users/feedback'); ?>" class="<?= ($currentRoute == 'users/feedback') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Feedback</a>
+                        <? else: ?>
+                            <a href="<?= base_url('users/feedback-form'); ?>" class="<?= ($currentRoute == 'users/feedback-form') ? 'text-blue-500' : 'text-gray-900'; ?> -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100">Feedback</a>
+                        <?php endif; ?>
                     </div>
                     <div class="py-6">
-                        <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-100">Log in</a>
+                        <a href="<?= base_url('logout'); ?>" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-100">Log out</a>
                     </div>
                 </div>
             </div>
