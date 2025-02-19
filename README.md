@@ -55,7 +55,16 @@ composer -V
 
 If Composer is detected, the installed version will be displayed. Run `composer install` again to ensure all dependencies are properly set up
 
-### 5. Run the Local Server
+### 5. Import Database File
+
+1. Open XAMPP Control Panel or Other
+2. Make sure the Apache and MySQL modules are Running
+3. Open your browser and navigate to http://localhost/phpmyadmin/, then press Enter
+4. Create database `db_online_examination`
+5. Select the Import tab
+6. Click Choose File and select the `db_online_examination.sql` file from your computer
+
+### 6. Run the Local Server
 
 Open a terminal and navigate to your project folder, then run the following command to start the local server
 
@@ -65,18 +74,18 @@ php spark serve
 
 This command will run the application on http://localhost:8080 by default.
 
-### 6. Access the Application
+### 7. Access the Application
 
 Open your browser and go to http://localhost:8080 to view the CodeIgniter 4 application running locally.
 
-### 7. If you get an error
+### 8. If you get an error
 ```bash
 'php' is not recognized as an internal or external command,
 operable program or batch file.
 ```
 This happens because Windows cannot find the PHP executable (php.exe) in its system PATH.
 
-### 8. Add PHP to Environment Variables
+### 9. Add PHP to Environment Variables
 1. Open System Properties:
    - Press `Win + R`, type `sysdm.cpl`, and hit `Enter`.
    - Go to the **Advanced** tab and click on **Environment Variables**.
