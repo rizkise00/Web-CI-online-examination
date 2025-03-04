@@ -45,7 +45,7 @@ class HomeController extends Controller
         $quiz = [
             'title' => $input['title'],
             'total_question' => $input['total_question'],
-            'time' => $input['time']
+            'time' => $input['time'] ?? 0
         ];
         $questions = $input['questions'];
 
@@ -80,7 +80,7 @@ class HomeController extends Controller
             'id' => $quizId,
             'title' => $input['title'],
             'total_question' => $input['total_question'],
-            'time' => $input['time']
+            'time' => $input['time'] ?? 0
         ];
         $questions = $input['questions'];
 

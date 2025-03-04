@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto p-6 lg:px-8">
     <div class="p-4 bg-white shadow rounded-lg">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Feedback</h1>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Feedback Form</h1>
         <div class="relative">
             <?php
                 $session = session();

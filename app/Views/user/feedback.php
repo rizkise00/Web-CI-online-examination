@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto p-6 lg:px-8">
     <div class="p-4 bg-white shadow rounded-lg">
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">User Ranking</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Feedback List</h1>
         </div>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

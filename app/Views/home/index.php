@@ -37,9 +37,9 @@
                         <th scope="col" class="px-6 py-3 min-w-40">
                             Total Question
                         </th>
-                        <th scope="col" class="px-6 py-3 min-w-32">
+                        <!-- <th scope="col" class="px-6 py-3 min-w-32">
                             Time Limit
-                        </th>
+                        </th> -->
                         <th scope="col" class="px-6 py-3 w-68">
                             Action
                         </th>
@@ -57,9 +57,9 @@
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <?= esc($quiz['total_question']) ?>
                             </td>
-                            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <!-- <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <?= esc($quiz['time'] . ' min') ?>
-                            </td>
+                            </td> -->
                             <td class="px-6 py-4">
                                 <?php if ($user['role'] == 'admin'): ?>
                                     <a href="<?= base_url('home/edit-quiz/' . $quiz['id']); ?>" class="mr-1">
